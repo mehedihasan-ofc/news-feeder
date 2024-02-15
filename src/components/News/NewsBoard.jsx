@@ -39,7 +39,7 @@ const NewsBoard = () => {
 
                     {
                         leftData?.map((news, _idx) => (
-                            <div key={_idx} className="col-span-12 grid grid-cols-12 gap-4 shadow p-5 border">
+                            <div key={_idx} className="col-span-12 grid grid-cols-12 gap-4">
                                 <div className="col-span-12 lg:col-span-4">
                                     <a href="#"
                                     ><h3
