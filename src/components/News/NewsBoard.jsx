@@ -1,12 +1,15 @@
 import { useContext } from "react";
 import { NewsContext } from "../../context";
+import NewsNotFound from "./NewsNotFound";
 
 const NewsBoard = () => {
 
     const { newsData } = useContext(NewsContext);
 
-    const leftData = newsData?.filter(news => news?.urlToImage !== null && news?.description !== null);
-    const rightData = newsData?.filter(news => news?.urlToImage === null);
+    console.log("newsDaa", newsData);
+
+    const leftNews = newsData.filter((_, index) => index % 2 !== 0);
+    const rightNews = newsData.filter((_, index) => index % 2 === 0);
 
     const formatPublishedAt = (publishedAt) => {
         const currentDate = new Date();
@@ -31,75 +34,87 @@ const NewsBoard = () => {
     };
 
     return (
-        <div>
-            <div className="container mx-auto grid grid-cols-12 gap-8">
-                <div
-                    className="col-span-12 grid grid-cols-12 gap-6 self-start xl:col-span-8"
-                >
+        <>
+            {
+                newsData.length > 0 ? <>
+                    <div className="container mx-auto grid grid-cols-12 gap-8">
 
-                    {
-                        leftData?.map((news, _idx) => (
-                            <div key={_idx} className="col-span-12 grid grid-cols-12 gap-4">
-                                <div className="col-span-12 lg:col-span-4">
-                                    <a href="#"
-                                    ><h3
-                                        className="mb-2.5 text-2xl font-bold lg:text-[28px]"
-                                    >
-                                            {news?.title}
-                                        </h3></a
-                                    >
-                                    <p className="text-base text-[#5C5955]">
-                                        {news?.description}
-                                    </p>
-                                    <p className="mt-5 text-base text-[#5C5955]">
-                                        {formatPublishedAt(news?.publishedAt)}
-                                    </p>
-                                </div>
-                                <div className="col-span-12 lg:col-span-8">
-                                    <img
-                                        className="w-full"
-                                        src={news?.urlToImage}
-                                        alt="thumb"
-                                    />
-                                    {
-                                        news?.author && <p className="mt-5 text-base text-[#5C5955]">
-                                            Author: {news?.author}
-                                        </p>
-                                    }
-                                </div>
-                            </div>
-                        ))
-                    }
+                        <div className="col-span-12 grid grid-cols-12 gap-6 self-start xl:col-span-8">
 
-                </div>
+                            {
+                                leftNews?.map(news => (
+                                    <div key={news?.title} className="col-span-12 grid grid-cols-12 gap-4">
 
-                <div className="col-span-12 self-start xl:col-span-4">
+                                        <div className="col-span-12 lg:col-span-4">
+                                            <a href="#"
+                                            ><h3
+                                                className="mb-2.5 text-2xl font-bold lg:text-[28px]"
+                                            >
+                                                    {news?.title}
+                                                </h3></a
+                                            >
+                                            {news?.content ? <p className="text-base text-[#5C5955]">
+                                                {news?.content}
+                                            </p> : news?.description ? <p className="text-base text-[#5C5955]">
+                                                {news?.description}
+                                            </p> : ""}
+                                            <p className="mt-5 text-base text-[#5C5955]">
+                                                {formatPublishedAt(news?.publishedAt)}
+                                            </p>
+                                        </div>
 
-                    <div className="space-y-6 divide-y-2 divide-[#D5D1C9]">
-
-                        {
-                            rightData?.map((news, _idx) => (
-                                <div key={_idx} className="col-span-12 md:col-span-8">
-
-                                    <div className="col-span-12 md:col-span-4">
-                                        <a href="#"
-                                        ><h3
-                                            className="mb-2.5 text-xl font-bold lg:text-[20px]"
-                                        >
-                                                {news?.title}
-                                            </h3></a
-                                        >
-                                        <p className="mt-5 text-base text-[#5C5955]">
-                                            {formatPublishedAt(news?.publishedAt)}
-                                        </p>
+                                        <div className="col-span-12 lg:col-span-8">
+                                            {news?.urlToImage && <img
+                                                className="w-full"
+                                                src={news?.urlToImage}
+                                                alt="thumb"
+                                            />}
+                                            {news?.author && <p className="mt-5 text-base text-[#5C5955]">
+                                                Author: {news?.author}
+                                            </p>}
+                                        </div>
                                     </div>
-                                </div>
-                            ))
-                        }
+                                ))
+                            }
+                        </div>
+
+                        <div className="col-span-12 self-start xl:col-span-4">
+                            <div className="space-y-6 divide-y-2 divide-[#D5D1C9]">
+
+                                {rightNews?.map(news => (
+                                    <div key={news?.title} className="col-span-12 mb-6 md:col-span-8">
+
+                                        {news?.urlToImage && <img
+                                            className="w-full"
+                                            src={news?.urlToImage}
+                                            alt="thumb"
+                                        />}
+
+                                        <div className="col-span-12 mt-6 md:col-span-4">
+                                            <a href="#"
+                                            ><h3
+                                                className="mb-2.5 text-xl font-bold lg:text-[20px]"
+                                            >
+                                                    {news?.title}
+                                                </h3></a
+                                            >
+
+                                            {news?.description && <p className="text-base text-[#292219]">
+                                                {news?.description}
+                                            </p>}
+
+                                            <p className="mt-5 text-base text-[#94908C]">
+                                                {formatPublishedAt(news?.publishedAt)}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-        </div>
+                </> : <NewsNotFound />
+            }
+        </>
     );
 };
 

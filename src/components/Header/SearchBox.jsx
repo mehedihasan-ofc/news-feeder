@@ -19,7 +19,7 @@ const SearchBox = () => {
 
     return (
         <div className="relative">
-            <img src={SearchIcon} alt="Search" onClick={() => setIsSearchOpen(!isSearchOpen)} />
+            <img src={SearchIcon} className='cursor-pointer' alt="Search" onClick={() => setIsSearchOpen(!isSearchOpen)} />
             {isSearchOpen && (
                 <div className="absolute top-0 right-0 mt-12 bg-white border border-gray-300 rounded p-2 flex items-center">
                     <input
